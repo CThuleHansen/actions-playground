@@ -23,10 +23,22 @@ jobs:
     - uses: actions/checkout@v2
     - name: Artifact Name
       if: runner.os == 'macOS'
-      run: echo "::set-env name=artifactname::$(find . -type f -iname 'test*' -exec basename {} \;)"
+      run: |
+           JARPATH=$(find . -type f -iname 'test*.txt')
+           echo "Found jar path: ${JARPATH}"
+           echo "Setting artifactpath to ${JARPATH}"
+           echo "::set-env name=artifactpath=${JARPATH}"
+
+           JARNAME=$(basename $JARPATH)
+           echo "Found jar path: ${JARPATH}"
+           echo "Setting artifactpath to ${JARPATH}"
+           echo "::set-env name=artifactpath=${JARPATH}"
+           echo "Setting artifactname to ${JARNAME}"
+           echo "::set-env name=artifactname::${JARNAME}"
+#           (echo "::set-env name=artifactname::$(find . -type f -iname 'test*' -exec basename {} \;)"
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       if: runner.os == 'macOS'
       with:
         name: ${{env.artifactname}}
-        path: test/*.txt
+        path: ${{env.artifactpath}}
