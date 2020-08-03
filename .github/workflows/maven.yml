@@ -28,5 +28,5 @@ jobs:
       uses: actions/upload-artifact@v2
       if: runner.os == 'macOS'
       with:
-        name: ${{artifactname}}
+        name: ${{env.artifactname}}
         path: test/*.txt
